@@ -1,5 +1,5 @@
 
-package rdd
+package manejo_estructuras_spark
 
 import org.apache.spark.rdd.RDD
 
