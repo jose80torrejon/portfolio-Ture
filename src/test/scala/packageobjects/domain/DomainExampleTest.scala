@@ -1,4 +1,4 @@
-package eoi.de.examples
+
 package packageobjects.domain
 
 import org.scalatest.funsuite.AnyFunSuite

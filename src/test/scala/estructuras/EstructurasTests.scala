@@ -1,4 +1,4 @@
-package eoi.de.examples
+
 package estructuras
 
 import org.scalatest.funsuite.AnyFunSuite

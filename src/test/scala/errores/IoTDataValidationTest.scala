@@ -1,4 +1,4 @@
-package eoi.de.examples
+
 package errores
 
 import org.scalatest.funsuite.AnyFunSuite
