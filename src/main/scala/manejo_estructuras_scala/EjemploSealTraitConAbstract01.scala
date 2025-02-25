@@ -1,5 +1,5 @@
 
-package estructuras
+package manejo_estructuras_scala
 
 // AnimalConNombre(nombre: String)
 // El sonido es abstracto ya que no se puede definir un sonido genérico para todos los animales

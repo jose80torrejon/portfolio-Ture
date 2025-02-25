@@ -1,5 +1,5 @@
 
-package estructuras
+package manejo_estructuras_scala
 
 object EjemploSealTrait01 extends App {
 
