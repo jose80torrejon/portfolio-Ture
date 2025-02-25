@@ -1,5 +1,5 @@
 
-package colecciones
+package manejo_estructuras_scala
 
 object Colecciones01 extends App {
 
