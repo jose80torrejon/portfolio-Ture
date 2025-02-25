@@ -1,5 +1,5 @@
 
-package packageobjects.domain
+package manejo_estructuras_scala
 
 object IntroOption extends App {
 

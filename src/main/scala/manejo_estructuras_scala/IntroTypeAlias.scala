@@ -1,5 +1,5 @@
 
-package packageobjects.domain
+package manejo_estructuras_scala
 
 object IntroTypeAlias {
   type TrainId = Int

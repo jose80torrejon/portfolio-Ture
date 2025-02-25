@@ -1,5 +1,5 @@
 
-package packageobjects
+package manejo_estructuras_scala
 
 import java.time.Instant
 
