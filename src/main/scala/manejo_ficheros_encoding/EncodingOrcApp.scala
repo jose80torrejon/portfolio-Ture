@@ -1,5 +1,5 @@
 
-package encoding
+package manejo_ficheros_encoding
 
 import org.apache.spark.sql.{SaveMode, SparkSession}
 
