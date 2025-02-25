@@ -1,5 +1,5 @@
 
-package estructuras
+package manejo_estructuras_scala
 
 import org.scalatest.funsuite.AnyFunSuite
 
