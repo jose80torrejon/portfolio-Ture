@@ -1,3 +1,5 @@
+package primeros_pasos
+
 
 
 object EjemplosDeFunciones extends App {

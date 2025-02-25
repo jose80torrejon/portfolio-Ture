@@ -1,6 +1,7 @@
 
 
 import org.openjdk.jmh.annotations._
+import primeros_pasos.Validaciones
 
 import java.util.concurrent.TimeUnit
 
