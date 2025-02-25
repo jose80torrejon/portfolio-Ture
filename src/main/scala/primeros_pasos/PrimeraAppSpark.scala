@@ -1,10 +1,8 @@
 
-package spark.sql.intro
+package primeros_pasos
 
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.SaveMode
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 
 object PrimeraAppSparkConf {
 
