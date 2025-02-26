@@ -2,7 +2,7 @@ package manejo_estructuras_spark
 
 import org.apache.spark.sql.{Column, SaveMode}
 
-object Ejemplo_Dataframes extends App {
+object manejo_Dataframes extends App {
   // Ejemplos de uso del API de DataFrames de Spark
   import org.apache.spark.sql.SparkSession
   import org.apache.spark.sql.functions._
@@ -20,75 +20,56 @@ object Ejemplo_Dataframes extends App {
   df.printSchema()
 
   // FILTRADO DE COLUMNAS
-  // SELECT SCALA
+  // Select SCALA
   val mayoresDieciocho =  df.filter(col("age") > 18)
   mayoresDieciocho.select(s"name").show()
   mayoresDieciocho.show()
 
   // SQL
-  // Creamos bbdd interna (opcional)
-  if (!spark.catalog.databaseExists("alumnos")) {
-    spark.sql("CREATE DATABASE alumnos")
-  }
-  spark.catalog.setCurrentDatabase("alumnos")  //establecemos que alumnos es mi bbdd actual
+  // Creamos bbdd interna
+  if (!spark.catalog.databaseExists("alumnos")) {spark.sql("CREATE DATABASE alumnos")}
 
+  // Establecemos que alumnos es mi bbdd actual
+  spark.catalog.setCurrentDatabase("alumnos")
   // QuerySql - simplemente crear una vista del Df y atacarlo directamente con sql
   mayoresDieciocho.createOrReplaceTempView("mayoresDieciochoView")
   spark.sql("SELECT * FROM mayoresDieciochoView").show()
 
-  spark.catalog.listDatabases().show(truncate = false)  //listamos mis bbdd
-  spark.catalog.listTables().show(truncate = false)     //listamos las tablas disponibles
+  // Listamos mis bbdd
+  spark.catalog.listDatabases().show(truncate = false)
+  // Listamos las tablas disponibles
+  spark.catalog.listTables().show(truncate = false)
   println(s"La BD actual es: ${spark.catalog.currentDatabase}")
   println()
   // Borramos la bbdd creada anteriormente
   spark.sql("DROP DATABASE alumnos CASCADE")
 
-  System.exit(0)
-
-  // CREACIÓN NUEVA COLUMNA
+  // Crear nueva columna
   val columnaAdicional = (col("age") + 1).alias("age2")
   val df2 = df.withColumn("age2", columnaAdicional)
   df2.show(false)
-  System.exit(0)
 
-  // GENERACIÓN FICHEROS DE SALIDA A PARTIR DEL DF
-  // Salvar el DataFrame en formato CSV
+  // Escritura en ficheros desde el DF
+  // CSV
   df.write.mode("overwrite").csv("out/ejemploDF01.csv")
-
-  // Salvar el DataFrame en formato Parquet
+  // Parquet
   df.write.mode(SaveMode.Append).parquet("out/ejemploDF01.parquet")
-
   // Salvar el DataFrame en formato JSON
   //df.write.mode(SaveMode.ErrorIfExists).json("out/ejemploDF01.json")
 
-  df.coalesce(1)
-    .write
-    .mode(SaveMode.Append)
-    .parquet("out/ejemploDF01.parquet")
-
-  // Si no se especifica el formato, Spark asume que es Parquet
-  df.coalesce(1)
-    .write
-    .mode(SaveMode.Append)
-    .save("out/ejemploDF01.parquet")
-
-  // Mas cosas interesantes sobre write
-  // https://spark.apache.org/docs/latest/api/scala/org/apache/spark/sql/DataFrameWriter.html
-
   // Lectura de un DataFrame a partir archivos
-  val csvDisco = spark.read
-    .option("sep", ",")
-    .option("inferSchema", "true")
+  // CSV
+  val csvDisco = spark.read.option("sep", ",").option("inferSchema", "true")
     .option("lazyQuotes", "true") // Para que no falle con comillas en los campos
     .option("header", "true")
     .csv("out/ejemploDF01.csv")
   csvDisco.show(false)
 
-  val parquetDisco = spark
-    .read
-    .parquet("out/ejemploDF01.parquet")
+  //Parquet
+  val parquetDisco = spark.read.parquet("out/ejemploDF01.parquet")
   parquetDisco.show(false)
 
+  //JSON
   val jsonDisco = spark
     .read
     .option("multiLine", "true")
@@ -107,5 +88,5 @@ object Ejemplo_Dataframes extends App {
 
   //jsonDisco.show(false)
 
-
+  //System.exit(0)
 }
