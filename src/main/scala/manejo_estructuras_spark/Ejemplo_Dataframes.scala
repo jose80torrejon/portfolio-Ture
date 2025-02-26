@@ -1,55 +1,57 @@
-
-package spark.sql.dataframes
+package manejo_estructuras_spark
 
 import org.apache.spark.sql.{Column, SaveMode}
 
-object EjemploDF01 extends App {
+object Ejemplo_Dataframes extends App {
   // Ejemplos de uso del API de DataFrames de Spark
-
   import org.apache.spark.sql.SparkSession
   import org.apache.spark.sql.functions._
 
-  // Crear una SparkSession
-  val spark = SparkSession.builder().appName("EjemploDF01").master("local[2]").getOrCreate()
-
+  // Creamos la SparkSession
+  val spark = SparkSession.builder().appName("Ejemplo_Dataframes").master("local[*]").getOrCreate()
   spark.sparkContext.setLogLevel("ERROR")
-  // Crear un DataFrame a partir de una secuencia de tuplas
-  val data = Seq(("Alice", 34), ("Bob", 45), ("Charlie", 23))
-  // toDF() es un método implícito de SparkSession que convierte una secuencia de tuplas en un DataFrame
-  // El método toDF() recibe un parámetro de tipo varargs que se utiliza para nombrar las columnas del DataFrame
-  val df = spark.createDataFrame(data).toDF("name", "age")
 
-  // Mostrar el contenido del DataFrame
+  // Creamos un DataFrame de forma manual
+  val data = Seq( ("Pepe", 34, "Madrid"), ("Juan", 45, "Barcelona"),
+                  ("Ana", 23, "Madrid"), ("Jose", 44, "Cuenca"),
+                  ("Cristina", 16, "Sevilla"), ("Lucia", 11, "Sevilla"))
+  val df = spark.createDataFrame(data).toDF("name", "age", "ciudad")
   df.show()
-  df.show(truncate = false)
-  df.show(numRows = 2, truncate = false)
-
-  // Mostrar el esquema del DataFrame
   df.printSchema()
 
-  // Filtrar el DataFrame
-  val mayoresDeVeintidos = df.filter(col("age") > 22)
-  mayoresDeVeintidos.show(false)
-  val criterioEdad: Column = col("age") > 22
-  val mayoresDeVeintidos2 = df.filter(criterioEdad)
-  mayoresDeVeintidos2.show(false)
+  // FILTRADO DE COLUMNAS
+  // SELECT SCALA
+  val mayoresDieciocho =  df.filter(col("age") > 18)
+  mayoresDieciocho.select(s"name").show()
+  mayoresDieciocho.show()
 
-  // Crear una nueva columna
+  // SQL
+  // Creamos bbdd interna (opcional)
+  if (!spark.catalog.databaseExists("alumnos")) {
+    spark.sql("CREATE DATABASE alumnos")
+  }
+  spark.catalog.setCurrentDatabase("alumnos")  //establecemos que alumnos es mi bbdd actual
+
+  // QuerySql - simplemente crear una vista del Df y atacarlo directamente con sql
+  mayoresDieciocho.createOrReplaceTempView("mayoresDieciochoView")
+  spark.sql("SELECT * FROM mayoresDieciochoView").show()
+
+  spark.catalog.listDatabases().show(truncate = false)  //listamos mis bbdd
+  spark.catalog.listTables().show(truncate = false)     //listamos las tablas disponibles
+  println(s"La BD actual es: ${spark.catalog.currentDatabase}")
+  println()
+  // Borramos la bbdd creada anteriormente
+  spark.sql("DROP DATABASE alumnos CASCADE")
+
+  System.exit(0)
+
+  // CREACIÓN NUEVA COLUMNA
   val columnaAdicional = (col("age") + 1).alias("age2")
   val df2 = df.withColumn("age2", columnaAdicional)
   df2.show(false)
+  System.exit(0)
 
-  // Crear una nueva columna con una función definida por el usuario
-  val doblarEdad = udf((age: Int) => age * 2)
-  val columnaDobleEdad = doblarEdad(col("age")).alias("ageDoble")
-  val df3 = df.withColumn("ageDoble", columnaDobleEdad)
-  df3.show(false)
-
-  // Sin usar udf
-  val columnaDobleEdad2 = col("age") * 2
-  val df4 = df.withColumn("ageDoble", columnaDobleEdad2)
-  df4.show(false)
-
+  // GENERACIÓN FICHEROS DE SALIDA A PARTIR DEL DF
   // Salvar el DataFrame en formato CSV
   df.write.mode("overwrite").csv("out/ejemploDF01.csv")
 
