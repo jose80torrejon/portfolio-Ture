@@ -20,7 +20,7 @@ object manejo_Dataframes extends App {
   df.printSchema()
 
   // FILTRADO DE COLUMNAS
-  // Select SCALA
+  // SCALA
   val mayoresDieciocho =  df.filter(col("age") > 18)
   mayoresDieciocho.select(s"name").show()
   mayoresDieciocho.show()
@@ -28,13 +28,11 @@ object manejo_Dataframes extends App {
   // SQL
   // Creamos bbdd interna
   if (!spark.catalog.databaseExists("alumnos")) {spark.sql("CREATE DATABASE alumnos")}
-
   // Establecemos que alumnos es mi bbdd actual
   spark.catalog.setCurrentDatabase("alumnos")
   // QuerySql - simplemente crear una vista del Df y atacarlo directamente con sql
   mayoresDieciocho.createOrReplaceTempView("mayoresDieciochoView")
   spark.sql("SELECT * FROM mayoresDieciochoView").show()
-
   // Listamos mis bbdd
   spark.catalog.listDatabases().show(truncate = false)
   // Listamos las tablas disponibles
@@ -43,6 +41,18 @@ object manejo_Dataframes extends App {
   println()
   // Borramos la bbdd creada anteriormente
   spark.sql("DROP DATABASE alumnos CASCADE")
+
+  // OPERACIONES sobre el DataFrame
+  println("Nombres de los alumnos")
+  df.select("name").distinct().count()
+  df.select("name").distinct().show()
+
+  println("Número de alumnos por ciudad")
+  df.groupBy("ciudad").count().show()
+
+  // Agregaciones
+  println("Media de edad")
+  df.agg("age" -> "avg").show()
 
   // Crear nueva columna
   val columnaAdicional = (col("age") + 1).alias("age2")
@@ -89,4 +99,8 @@ object manejo_Dataframes extends App {
   //jsonDisco.show(false)
 
   //System.exit(0)
+
+
+
+
 }

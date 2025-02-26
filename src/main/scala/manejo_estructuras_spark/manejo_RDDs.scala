@@ -1,12 +1,10 @@
-
 package manejo_estructuras_spark
 
 import org.apache.spark.rdd.RDD
 
-object EjemplosSparkRDD extends App {
+object manejo_RDDs extends App {
 
   // Ejemplo de uso del API de RDD de Spark
-
   import org.apache.spark.{SparkConf, SparkContext}
   // Un RDD es una colección distribuida de elementos
   // Los RDDs se pueden crear a partir de un archivo, de una colección de datos en memoria o de una base de datos
