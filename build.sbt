@@ -7,13 +7,10 @@ version := "1.0.1"
 scalaVersion := "2.13.16"
 
 
-
-
-
 val VersionSpark = "3.5.4"
 val VersionCatsCore = "2.13.0"
 val VersionScalaTest = "3.2.19"
-val VersionScalafmt = "3.8.6"
+val VersionScalafmt = "3.9.1"
 val VersionJmh = "1.37"
 
 
