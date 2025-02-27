@@ -1,5 +1,4 @@
-
-package spark.sql.intro
+package generadores_datos
 
 import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 

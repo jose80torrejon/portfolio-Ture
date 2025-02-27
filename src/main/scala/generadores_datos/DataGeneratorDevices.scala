@@ -1,5 +1,4 @@
-
-package spark.sql.intro
+package generadores_datos
 
 import java.time.Instant
 import scala.util.Random
