@@ -9,9 +9,10 @@ Asegurarnos que en Project coge en SDK la Graal 21 y en Language level seleccion
 
 ## Primera Ejecución (Errores típicos):
 1) La primera vez que ejecutamos la aplicación vamos a tener este mensaje de error, es debido a que no está cogiendo las dependencias marcadas como provided en el SBT:
+```log
 Error: Unable to initialize main class...
 Caused by: java.lang.NoClassDefFoundError: org/apache/spark...
-
+```
 Hay que ir a la configuracion de la ejecución  -> Edit Configuration -> Modify Options -> Activar "Add dependencies with "provided" scope to classpath"
 
 2) Obtendremos un segundo mensaje de error similar a este:
@@ -20,6 +21,7 @@ class org.apache.spark.storage.StorageUtils$(in unnamed module @0x378542de)canno
 
 Es debido a las restricciones de seguridad de la maquina de Java, para solucionarlo hay que añadir estas líneas al marcar la opción "Add VM Options" en la configuración de ejecución:
 
+```
 --add-opens=java.base/java.lang=ALL-UNNAMED
 
 --add-opens=java.base/java.util=ALL-UNNAMED
@@ -61,20 +63,23 @@ Es debido a las restricciones de seguridad de la maquina de Java, para soluciona
 --add-opens=java.base/sun.util.calendar=ALL-UNNAMED
 
 --add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED
+```
 
 Para no tener que hacer siempre estos 2 pasos, se puede añadir esta configuración en Edit Templates del proyecto para que la coja para todas las aplicaciones.
 
 
 ## Variables de entorno necesarias:
-1) Descargar la carpeta "winutil\shadoop-2.7.1" de este repo (https://github.com/steveloughran/winutils/tree/master),y te lo copias en local (C:\winutils\hadoop-2.7.1)
+1) Descargar la carpeta `winutil\shadoop-2.7.1` de este repo (https://github.com/steveloughran/winutils/tree/master),y te lo copias en local (C:\winutils\hadoop-2.7.1)
 
-2) Descargar la carpeta "spark-2.4.4-bin-hadoop2.7" del zip "spark-2.4.4-bin-hadoop2.7.tgz" , yo lo he cogido de esta ruta (https://archive.apache.org/dist/spark/spark-2.4.4/) y te lo copias en local (C:\spark-2.4.4-bin-hadoop2.7)
+2) Descargar la carpeta `spark-2.4.4-bin-hadoop2.7` del zip `spark-2.4.4-bin-hadoop2.7.tgz` , yo lo he cogido de esta ruta (https://archive.apache.org/dist/spark/spark-2.4.4/) y te lo copias en local (C:\spark-2.4.4-bin-hadoop2.7)
 
 3) Añades las 2 variables de entorno en Windows:
-HADOOP_HOME --> C:\winutils\hadoop-2.7.1
-SPARK_HOME --> C:\spark-2.4.4-bin-hadoop2.7\bin
 
-4) Añadir a la variable PATH las 2 rutas:
+    `HADOOP_HOME` --> C:\winutils\hadoop-2.7.1
+
+    `SPARK_HOME` --> C:\spark-2.4.4-bin-hadoop2.7\bin
+
+4) Añadir a la variable `PATH` las 2 rutas:
 C:\winutils\hadoop-2.7.1\bin
 C:\spark-2.4.4-bin-hadoop2.7\bin
 

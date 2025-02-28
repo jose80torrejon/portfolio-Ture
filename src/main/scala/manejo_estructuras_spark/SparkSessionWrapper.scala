@@ -121,17 +121,12 @@ trait SparkSessionWrapper {
       builder.getOrCreate()
     }
 
-    def build: SparkSession = {
-      val session = buildSparkSession("spark session")
-      setLogLevel(session, logLevel)
-      session
-    }
-    def build(name: String): SparkSession = {
-      val session = buildSparkSession(name)
+    def build(implicit appName: String = "spark session"): SparkSession = {
+      val session = buildSparkSession(appName)
       setLogLevel(session, logLevel)
       session
     }
   }
-  def createSparkSession: SessionBuilder = new SessionBuilder
+  private def createSparkSession: SessionBuilder = new SessionBuilder
   private def setLogLevel(spark: SparkSession, logLevel: String): Unit = spark.sparkContext.setLogLevel(logLevel)
 }
